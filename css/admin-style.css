@@ -1,0 +1,127 @@
+#wpadminbar ul#wp-admin-bar-root-default > li#wp-admin-bar-wp-logo,
+#wpadminbar ul#wp-admin-bar-root-default > li#wp-admin-bar-comments,
+#wpadminbar ul#wp-admin-bar-root-default > li#wp-admin-bar-new-content
+{
+    display: none;
+}
+
+#wpcontent, #wpfooter {
+    margin-left: 260px;
+}
+
+#adminmenu, #adminmenu .wp-submenu, #adminmenuback, #adminmenuwrap {
+    width: 260px;
+}
+
+#adminmenu .wp-submenu{
+    left: 260px;
+}
+
+#adminmenu .wp-submenu-head, #adminmenu a.menu-top {
+    font-size: 16px; 
+    line-height: 1.6; 
+}
+
+#adminmenu div.wp-menu-name {
+    padding: 5px 0 8px;
+    margin-left: 40px;
+}
+
+.stock_table tfoot tr td{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#titlediv #title-prompt-text{
+    top: -8px;
+}
+
+body.wp-admin a{
+    color: green;
+}
+
+body.wp-admin a.removeField{
+    color: red;
+}
+
+body.wp-admin a:hover{
+    text-decoration: none;
+}
+
+body .cmb2-wrap input.cmb2-text-small{
+    width: 150px;
+}
+
+body span.cmb2-metabox-description {    
+    display: block;
+    margin-top: 5px;
+}
+
+.meta-box-sortables select#_cmb_company_name{
+    
+}
+
+body #side-sortables .cmb-th{
+    padding-bottom: 0px;
+}
+
+body #side-sortables .cmb2-wrap > .cmb-field-list > .cmb-row{
+    padding: 15px 0px;
+}
+
+body #wpfooter p{
+    display: none;
+}
+
+body .postbox {
+    border: 1px solid #f9f9f9;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);    
+    border-radius: 10px;
+}
+
+body #titlediv #title { 
+    border-color: #f9f9f9;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+body .postbox-header{
+    border-color: #e5e5e5;
+}
+
+body input[type="text"], body.wp-core-ui select{
+    border-color: #ccc;
+}
+
+body #major-publishing-actions{
+    background: cornsilk;
+}
+
+tfoot.invoice_footer{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+tfoot.invoice_footer tr.deposite_amount td, 
+tfoot.invoice_footer tr.deposite_amount td input{
+    color: green;    
+    font-size: 18px;
+}
+
+tfoot.invoice_footer tr.due_amount td{
+    color: red;    
+}
+
+body #poststuff .stuffbox > h3, 
+body #poststuff h2, 
+body #poststuff h3.hndle{
+    font-size: 16px;
+}
+
+table.invoiceTable.table{
+    font-size: 17px;
+}
+
+tfoot.invoice_footer tr.deposite_amount td input#paid_amount{
+    width: 120px;
+    display: inline-block;
+} 
