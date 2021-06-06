@@ -1,6 +1,6 @@
 <?php
 
-if( isset($_POST['generate_posts_pdf'])){
+if( isset($_POST['generate_invoice_pdf'])){
 
     if (isset($_POST['post_id'])) {
         
@@ -12,8 +12,10 @@ if( isset($_POST['generate_posts_pdf'])){
 
 }
 
+/*
+## QR Code Generator Function
+*********************************/
 function qr_code($text){
-    //$t=time();    
 
     //set it to writable location, a place for temp generated PNG files
     $PNG_TEMP_DIR = dirname(__FILE__).DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR;
@@ -38,33 +40,7 @@ function qr_code($text){
     $qrImage = $PNG_WEB_DIR.basename($filename);
 
     return $qrImage; 
-}
-
-/*add_action( 'admin_menu', 'as_fpdf_create_admin_menu' );
-function as_fpdf_create_admin_menu() {
-    $hook = add_submenu_page(
-        'edit.php?post_type=invoice',
-        'Atomic Smash PDF Generator',
-        'Atomic Smash PDF Generator',
-        'manage_options',
-        'as-fdpf-tutorial',
-        'as_fpdf_create_admin_page'
-    );
-}
-
-function as_fpdf_create_admin_page() {    
-
-?>
-<div class="wrap">
-    
-    <form method="post">
-
-        <button class="button button-primary" type="submit" name="generate_posts_pdf" value="generate">Download</button>
-
-    </form>
-</div>
-<?php
-}*/
+} 
 
 function output_pdf($post_id) {  
 
@@ -76,19 +52,16 @@ function output_pdf($post_id) {
         function Header(){
             
             $headerImage = get_template_directory_uri().'/inc/invoice/tutorial/header.png';
-
-            // Pad Header
-            $this->Image($headerImage,10,0,200);
             
-            // Line break
+            $this->Image($headerImage,10,0,200);
+                        
             $this->Ln(25);
         }
 
         // Page footer
         function Footer(){       
-            // Position at 1.5 cm from bottom
-            $this->SetY(-15);
-            //$this->Image( $qrImage,0,0,40);
+            
+            $this->SetY(-15);            
             
             $this->SetFont('Arial','',10);
             
@@ -101,12 +74,11 @@ function output_pdf($post_id) {
             $this->Cell(0,-5,'10, Chanmary Approse Road, Shipyard, Khulna',0,0,'R');
             
         }
-
     }
 
     /*
-    ## 
-    *************************/     
+    ## Invoice Dynamic Data
+    ****************************/     
     $order_date     = get_post_meta($post_id, 'order_date', true );
     $product_size   = get_post_meta($post_id, 'product_size', true );
     $truck_number   = get_post_meta($post_id, 'truck_number', true );
@@ -125,25 +97,14 @@ function output_pdf($post_id) {
     $pre_due        = 150000;
     $deposite       = 100000;
 
-    $type_nb        = get_post_meta($post_id, 'type_nb', true );
-    
+    $type_nb        = get_post_meta($post_id, 'type_nb', true );    
 
-    $date = date("F j, Y");
+    //$date = date("F j, Y");
 
     $padImage = get_template_directory_uri().'/inc/invoice/tutorial/pad_03.jpg';
 
     $footerImage = get_template_directory_uri().'/inc/invoice/tutorial/footer.png';
-
-
-    /*
-    ## 
-    **************************************/
-    $qrCodeText = '#'.$post_id.' - tk.70500/-';
-
-    $qr_code = qr_code($qrCodeText);
-
-    $qr_code_image = get_template_directory_uri().'/'.$qr_code;
-
+    
     // Instanciation of inherited class
     $pdf = new PDF();
 
@@ -155,9 +116,7 @@ function output_pdf($post_id) {
 
     $pdf->Image( $padImage ,10,55,190);
 
-    $pdf->Image( $footerImage,0,250,110);
-
-    $pdf->Image( $qr_code_image ,10,260,30);
+    $pdf->Image( $footerImage,0,250,110);    
 
     $pdf->Cell(0,6,'INVOICE TO:',0,1);
     $pdf->Cell(0,6,'Greenovation Eng. & Con. LTD',0,1);
@@ -181,7 +140,6 @@ function output_pdf($post_id) {
     $pdf->SetFont('Arial','b',12);
 
     $pdf->Cell(0,6,'Subject: '.get_the_title($post_id) ,0,1);
-
 
     $pdf->Cell(50 ,10,'',0,1);
 
@@ -207,10 +165,9 @@ function output_pdf($post_id) {
     $pdf->Cell(30 ,6,$product_size,1,0,'C');
     $pdf->Cell(28 ,6,$truck_number,1,0,'C');
     $pdf->Cell(30 ,6,$quantity,1,0,'C');
-    $pdf->Cell(30 ,6,'Tk. '.$price,1,0,'C');
-    $pdf->Cell(30 ,6,'Tk. '.$unit_total,1,1,'R');
-
-    //for ($i = 0; $i <= 10; $i++) {
+    $pdf->Cell(30 ,6,'Tk. '.number_format($price, 0),1,0,'C');
+    $pdf->Cell(30 ,6,'Tk. '.number_format($unit_total,0),1,1,'R');
+    
     for ($counter = 1; $counter <= $type_nb; $counter++) { 
 
         ${'order_date'.$counter} = get_post_meta($post_id, 'order_date'.$counter.'', true ); 
@@ -232,8 +189,8 @@ function output_pdf($post_id) {
         $pdf->Cell(30 ,6,${'product_size'.$counter},1,0,'C');
         $pdf->Cell(28 ,6,${'truck_number'.$counter},1,0,'C');
         $pdf->Cell(30 ,6,${'quantity'.$counter},1,0,'C');
-        $pdf->Cell(30 ,6,'Tk. '.${'price'.$counter},1,0,'C');
-        $pdf->Cell(30 ,6,'Tk. '.${'unit_total'.$counter},1,1,'R');
+        $pdf->Cell(30 ,6,'Tk. '.number_format(${'price'.$counter}, 0),1,0,'C');
+        $pdf->Cell(30 ,6,'Tk. '.number_format(${'unit_total'.$counter}, 0),1,1,'R');
     }
 
     $pdf->SetFont('Arial','B',10);
@@ -242,25 +199,42 @@ function output_pdf($post_id) {
     $pdf->Cell(28 ,6,'Total Quantity:',1,0,'R');
     $pdf->Cell(30 ,6,$total_qty,1,0,'C');
     $pdf->Cell(30 ,6,'Subtotal:',1,0,'R');
-    $pdf->Cell(30 ,6,'Tk. '.$subtotal,1,1,'R');
+    $pdf->Cell(30 ,6,'Tk. '.number_format($subtotal, 0),1,1,'R');
 
     $pdf->Cell(128 ,6,'',0,0);
     $pdf->Cell(30 ,6,'Prev. Due:',0,0,'R');
-    $pdf->Cell(30 ,6,'Tk. '.$pre_due,1,1,'R');
+    $pdf->Cell(30 ,6,'Tk. '.number_format($pre_due, 0),1,1,'R');
+
+    $grandTotal = $subtotal + $pre_due; 
+
+    $pdf->Cell(128 ,6,'',0,0);
+    $pdf->Cell(30 ,6,'Total:',0,0,'R');
+    $pdf->Cell(30 ,6,'Tk. '.number_format($grandTotal, 0),1,1,'R');
 
     $pdf->Cell(118 ,6,'',0,0);
     $pdf->Cell(40 ,6,'Deposite (20 Jan 2021) :',0,0,'R');
-    $pdf->Cell(30 ,6,'Tk. '.$deposite,1,1,'R');
+    $pdf->Cell(30 ,6,'Tk. '.number_format($deposite, 0),1,1,'R');
 
     $pdf->Cell(118 ,6,'',0,0);
     $pdf->Cell(40 ,6,'Paid Amount :',0,0,'R');
-    $pdf->Cell(30 ,6,'Tk. '.$paid_amount,1,1,'R');
+    $pdf->Cell(30 ,6,'Tk. '.number_format($paid_amount, 0),1,1,'R');
 
     $total_due = ($subtotal + $pre_due) - $deposite - $paid_amount;
 
     $pdf->Cell(128 ,6,'',0,0);
     $pdf->Cell(30 ,6,'Total Due :',0,0,'R');
-    $pdf->Cell(30 ,6, 'Tk. '.$total_due,1,1,'R');     
+    $pdf->Cell(30 ,6, 'Tk. '.number_format($total_due, 0),1,1,'R'); 
+
+    /*
+    ## QR Code Generator
+    **************************************/
+    $qrCodeText = '#'.$post_id.' - Tk. '.$grandTotal;
+
+    $qr_code = qr_code($qrCodeText);
+
+    $qr_code_image = get_template_directory_uri().'/inc/'.$qr_code;
+
+    $pdf->Image( $qr_code_image ,10,260,30);    
 
     //$pdf->Output();
 

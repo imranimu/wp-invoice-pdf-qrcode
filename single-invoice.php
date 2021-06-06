@@ -8,12 +8,12 @@
  */
 
 get_header(); 
- 	
+
  	?>
  	<div class="InvoiceWrap">
  		<div class="container">
 
-		 	<?php
+		 <?php
 			while ( have_posts() ) :
 
 				the_post();
@@ -55,7 +55,7 @@ get_header();
 					<div class="col-md-6 text-right">
 						<h3 class="m-0">Invoice #<?php echo $post_id; ?></h3>
 						<p class="text-right">Date: <?php echo $order_date; ?><br>
-						<a href="www.salimbrothersbd.com">www.salimbrothersbd.com</a></p>	
+						www.salimbrothersbd.com</p>	
 					</div>
 				</div>
 
@@ -158,6 +158,11 @@ get_header();
 				  			<td class="text-right" colspan="2">Prev. Due :</td>
 				  			<td class="text-right"><?php echo currency_price($pre_due, 0); ?></td>
 				  		</tr>
+				  		<tr>
+				  			<td colspan="4"><input type="hidden" id="oldDue" value="<?php echo $pre_due; ?>"></td>
+				  			<td class="text-right" colspan="2">Total :</td>
+				  			<td class="text-right"><?php echo currency_price($pre_due + $subtotal , 0); ?></td>
+				  		</tr>
 				  		<tr class="deposite_amount">
 				  			<td colspan="4"></td>
 				  			<td class="text-right" colspan="2">Paid Amount :</td>
@@ -190,7 +195,7 @@ get_header();
                         <span class="button-icon fa fa-pencil-square-o"></span>
                     </a>
 
-			        <button type="submit" class="button" name="generate_posts_pdf">
+			        <button type="submit" class="button" name="generate_invoice_pdf">
                         <span class="button-text">Download</span>
                         <span class="button-icon fa fa-file-pdf-o"></span>
                     </button>
@@ -199,9 +204,8 @@ get_header();
 
 				<?php				 
 
-			endwhile; // End of the loop.	 
-
-			?>
+			endwhile; // End of the loop. 
+		?>
 
 		</div>
 	</div>

@@ -25,26 +25,22 @@ function select_invoice_type(){
 
 	global $post;
 
-	$post_id 			= $post->ID;
+	$post_id 		= $post->ID;
 
 	$order_date 	= get_post_meta($post_id, 'order_date', true );
 	$product_size 	= get_post_meta($post_id, 'product_size', true );
 	$truck_number 	= get_post_meta($post_id, 'truck_number', true );
-	$get_qty		= get_post_meta($post_id, 'quantity', true );
-	$get_price			= get_post_meta($post_id, 'price', true );
+	$get_qty			= get_post_meta($post_id, 'quantity', true );
+	$get_price		= get_post_meta($post_id, 'price', true );
 	$get_total	 	= get_post_meta($post_id, 'total_price', true );
 
-	$paid_amount	 	= get_post_meta($post_id, 'paid_amount', true );	
+	$paid_amount	= get_post_meta($post_id, 'paid_amount', true );	
 
 	$quantity 		= ($get_qty) ? $get_qty : 0;	
 	$price 			= ($get_price) ? $get_price : 0;	
 	$unit_total 	= ($get_total) ? $get_total : 0;
 
-	$type_nb 		= get_post_meta($post_id, 'type_nb', true );	
-
-	// $qrCodeText = '#'.$post_id.' - tk.350000/-';
-
-	// $qr_image = qr_code($qrCodeText);
+	$type_nb 		= get_post_meta($post_id, 'type_nb', true );
 
 	?>
 
@@ -196,9 +192,7 @@ function select_invoice_type(){
 		
 		<hr>
 
-		<div class="pt-5">
-
-			<!-- <a class="btn btn-primary" style="color: #fff" href="edit.php?post_type=invoice&page=as-fdpf-tutorial&post_id=81" target="_blank">Download Invoice</a> -->
+		<div class="pt-5"> 
 
 			<a class="btn btn-primary" style="color: #fff" href="<?php echo get_the_permalink($post_id);?>" target="_blank">Download Invoice</a>
 
