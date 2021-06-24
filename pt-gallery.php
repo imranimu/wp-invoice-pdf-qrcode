@@ -9,7 +9,7 @@ get_header();
 <!-- Page Title Starts -->
 <section class="title-section text-left text-sm-center revealator-slideup revealator-once revealator-delay1">
     <h1>Our <span>Gallery</span></h1>
-    <span class="title-bg">works</span>
+    <span class="title-bg">gallery</span>
 </section>
 <!-- Page Title Ends -->
 <!-- Main Content Starts -->

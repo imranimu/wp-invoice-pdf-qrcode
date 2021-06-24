@@ -5,6 +5,18 @@
     display: none;
 }
 
+#adminmenu li, body.post-type-invoice div#submitdiv{
+    display: none; 
+}
+
+#adminmenu li#menu-dashboard, #adminmenu li#menu-dashboard ul li,
+#adminmenu li#menu-pages, #adminmenu li#menu-pages ul li,
+#adminmenu li#menu-posts-invoice, #adminmenu li#menu-posts-invoice ul li,
+#adminmenu li#menu-posts-products, #adminmenu li#menu-posts-products ul li,
+#adminmenu li#menu-posts-clients, #adminmenu li#menu-posts-clients ul li{
+    display: block;
+}
+
 #wpcontent, #wpfooter {
     margin-left: 260px;
 }
@@ -107,7 +119,8 @@ tfoot.invoice_footer tr.deposite_amount td input{
     font-size: 18px;
 }
 
-tfoot.invoice_footer tr.due_amount td{
+tfoot.invoice_footer tr.due_amount td,
+tfoot.invoice_footer tr.due_amount input{
     color: red;    
 }
 
@@ -121,7 +134,8 @@ table.invoiceTable.table{
     font-size: 17px;
 }
 
-tfoot.invoice_footer tr.deposite_amount td input#paid_amount{
+tfoot.invoice_footer tr.deposite_amount td input#paid_amount,
+tfoot.invoice_footer tr td input.inlineInput{
     width: 120px;
     display: inline-block;
 } 

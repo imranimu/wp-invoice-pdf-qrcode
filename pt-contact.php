@@ -20,16 +20,19 @@ get_header();
             <!-- Left Side Starts -->
             <div class="col-12 col-lg-4">
                 <h3 class="text-uppercase custom-title mb-0 ft-wt-600 pb-3">Don't be shy !</h3>
-                <p class="open-sans-font mb-3">Feel free to get in touch with me. I am always open to discussing new projects, creative ideas or opportunities to be part of your visions.</p>
+                <p class="open-sans-font mb-3">Feel free to get in touch with us. I am always open to discussing new projects, creative ideas or opportunities to be part of your visions.</p>
                 <p class="open-sans-font custom-span-contact position-relative">
                     <i class="fa fa-envelope-open position-absolute"></i>
-                    <span class="d-block">mail me</span><a href="mailto:salimbrothesbd@mail.com">salimbrothesbd@mail.com</a>
+                    <span class="d-block">mail us</span><a href="mailto:salimbrothesbd@mail.com">salimbrothesbd@mail.com</a>
+                </p><p class="open-sans-font custom-span-contact position-relative">
+                    <i class="fa fa-envelope-open position-absolute"></i>
+                    <span class="d-block">mail us</span><a href="mailto:salimhowlader1@gmail.com">salimhowlader1@gmail.com</a>
                 </p>
                 <p class="open-sans-font custom-span-contact position-relative">
                     <i class="fa fa-phone-square position-absolute"></i>
-                    <span class="d-block">call me</span>+880 1711 30 96 90
+                    <span class="d-block">call us</span>+880 1711 30 96 90
                 </p>
-                <ul class="social list-unstyled pt-1 mb-5">
+                <!-- <ul class="social list-unstyled pt-1 mb-5">
                     <li class="facebook"><a title="Facebook" href="#"><i class="fa fa-facebook"></i></a>
                     </li>
                     <li class="twitter"><a title="Twitter" href="#"><i class="fa fa-twitter"></i></a>
@@ -38,7 +41,7 @@ get_header();
                     </li>
                     <li class="dribbble"><a title="Dribbble" href="#"><i class="fa fa-dribbble"></i></a>
                     </li>
-                </ul>
+                </ul>-->
             </div>
             <!-- Left Side Ends -->
             <!-- Contact Form Starts -->

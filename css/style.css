@@ -1,11 +1,3 @@
-/*
-Template Name: Tunis - Personal Portfolio
-Author: celtano
-Author URI: http://themeforest.net/user/celtano
-Description: Tunis - Personal Portfolio
-Version: 1.0
-*/
-
 /*------------------------------------------------------------------
 [Table of contents]
 	+ General
@@ -509,8 +501,8 @@ body.light hr.separator {
     z-index: -1;
     position: absolute;
     top: 0;
-    right: 0;
-    opacity: 0;
+    right: 27px;
+    opacity: 1;
     color: #fff;
     line-height: 50px;
     font-weight: 500;
@@ -519,6 +511,7 @@ body.light hr.separator {
     text-transform: uppercase;
     padding: 0 25px 0 30px;
     height: 50px;
+    background-color: gray;
   }
 
   .header .icon-box a:hover h2 {
@@ -681,6 +674,8 @@ body.light hr.separator {
   position: relative;
   padding: 0 20px 0 60px;
   margin: 0 0 50px;
+  width: 45%;
+  display: inline-block;
 }
 
 .about .resume-box li:after {
@@ -691,7 +686,11 @@ body.light hr.separator {
   bottom: 0;
   border-left: 1px solid #333;
 }
-
+.about .resume-box li .thum_image img{
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+}
 .about .resume-box .icon {
   width: 40px;
   height: 40px;

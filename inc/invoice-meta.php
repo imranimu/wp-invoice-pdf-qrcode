@@ -34,7 +34,16 @@ function select_invoice_type(){
 	$get_price		= get_post_meta($post_id, 'price', true );
 	$get_total	 	= get_post_meta($post_id, 'total_price', true );
 
-	$paid_amount	= get_post_meta($post_id, 'paid_amount', true );	
+	$tax	 			= get_post_meta($post_id, 'tax', true );
+	$tax_amount	 	= get_post_meta($post_id, 'tax_amount', true );
+	$pre_due	 		= get_post_meta($post_id, 'pre_due', true );
+	$deposite	 	= get_post_meta($post_id, 'deposite', true );
+	$less_amount	= get_post_meta($post_id, 'less_amount', true );
+	 
+
+	$paid_amount	= get_post_meta($post_id, 'paid_amount', true );
+	$total_due		= get_post_meta($post_id, 'total_due', true );
+
 
 	$quantity 		= ($get_qty) ? $get_qty : 0;	
 	$price 			= ($get_price) ? $get_price : 0;	
@@ -61,9 +70,7 @@ function select_invoice_type(){
 			</thead>
 			<tbody>
 			   <tr>
-			   	<?php 				   	
-			   		$pre_due = 150000;
-			   		$deposite = 100000;
+			   	<?php  
 
 						$subtotal += $unit_total;
 
@@ -156,34 +163,62 @@ function select_invoice_type(){
 						</div>
 		  			</td>
 		  			<td class="text-right">Total Quantity :</td>
-		  			<td class="text-center"><?php echo $total_qty; ?></td>
+		  			<td class="text-center" id="total_qnt"><?php echo $total_qty; ?></td>
 		  			<td class="text-right">Subtotal :</td>
 		  			<td class="text-right subtotal_price" id="sub_total">Tk. <?php echo  $subtotal;?></td>
 		  		</tr>
-		  		<tr class="due_amount">
-		  			<td colspan="5"><input type="hidden" id="oldDue" value="<?php echo $pre_due; ?>"></td>
-		  			<td class="text-right" colspan="2">Prev. Due :</td>
-		  			<td class="text-right">Tk. <?php echo $pre_due;?></td>
+		  		<tr class="tax_amount">
+		  			<td colspan="5"></td>
+		  			<td class="text-right" colspan="2">Tax (%) : <input id="tax" type="text" class="form-control inlineInput text-right" placeholder="0" name="tax" value="<?php echo $tax;?>" onkeypress='validate(event)'></td>
+		  			<td class="text-right">
+		  				<span>Tk. </span><input id="tax_amount" readonly type="text" class="form-control inlineInput text-right" placeholder="0" name="tax_amount" value="<?php echo $tax_amount;?>">
+		  			</td>
 		  		</tr>
+
+		  		<tr class="due_amount">
+		  			<td colspan="5"></td>
+		  			<td class="text-right" colspan="2">Prev. Due :</td>
+		  			<td class="text-right">		  				 
+		  				<span>Tk. </span><input id="oldDue" type="text" class="form-control inlineInput text-right" placeholder="0" name="pre_due" value="<?php echo $pre_due; ?>" onkeypress='validate(event)'>		
+		  			</td>
+		  		</tr>
+		  		
+		  		<tr class="deposite_amount">
+		  			<td colspan="5"></td>
+		  			<td class="text-right" colspan="2">Deposite Amount :</td>		  			 
+		  			<td class="text-right">
+		  				<span>Tk. </span><input id="depositeAmount" type="text" class="form-control inlineInput text-right" placeholder="0" name="deposite" value="<?php echo $deposite; ?>" onkeypress='validate(event)'>
+		  			</td>
+		  		</tr>
+
+		  		<tr>
+		  			<td colspan="5">
+		  				<input type="hidden" id="grand_amount" name="grand_total" value="">
+		  			</td>
+		  			<td class="text-right" colspan="2">Grand Total :</td>		  			 
+		  			<td class="text-right" id="grand_total"></td>
+		  		</tr>		  		
+
 		  		<tr class="deposite_amount">
 		  			<td colspan="5"></td>
 		  			<td class="text-right" colspan="2">Paid Amount :</td>
 		  			<td class="text-right">
-		  				<span>Tk. </span><input id="paid_amount" type="text" class="form-control text-right" placeholder="0" name="paid_amount" value="<?php echo $paid_amount; ?>">
+		  				<span>Tk. </span><input id="paid_amount" type="text" class="form-control text-right" placeholder="0" name="paid_amount" value="<?php echo $paid_amount; ?>" onkeypress='validate(event)'>
 		  			</td>
 		  		</tr>
-		  		<tr class="deposite_amount">
-		  			<td colspan="5"><input type="hidden" id="depositeAmount" value="<?php echo $deposite;?>"></td>
-		  			<td class="text-right" colspan="2">Deposite (20 Jan 2021) :</td>
-		  			<td class="text-right">Tk. <?php echo $deposite;?></td>
+
+		  		<tr>
+		  			<td colspan="5"></td>
+		  			<td class="text-right" colspan="2">Less :</td>
+		  			<td class="text-right">
+		  				<span>Tk. </span><input id="less_amount" type="text" class="form-control inlineInput text-right" placeholder="0" name="less_amount" value="<?php echo $less_amount;?>" onkeypress='validate(event)'>
+		  			</td>
 		  		</tr>
+
 		  		<tr class="due_amount">
 		  			<td colspan="5"></td>
-		  			<td class="text-right" colspan="2">Total Due :</td>
-		  			<?php 
-		  				$total_due = ($subtotal + $pre_due) - $deposite;
-		  			?>
-		  			<td class="text-right" id="total_amount">Tk. <?php echo $total_due; ?></td>
+		  			<td class="text-right" colspan="2">Total Due :</td>		  			 
+		  			<td class="text-right"><span>Tk. </span> <input type="text" readonly class="form-control inlineInput text-right" id="total_amount" name="total_due" value="<?php echo $total_due;?>"></td>
 		  		</tr>
 		  	</tfoot>
 		</table>		
@@ -194,7 +229,9 @@ function select_invoice_type(){
 
 		<div class="pt-5"> 
 
-			<a class="btn btn-primary" style="color: #fff" href="<?php echo get_the_permalink($post_id);?>" target="_blank">Download Invoice</a>
+			<input type="submit" name="post_save" value="Save Invoice" class="btn btn-success">			 
+
+			<a class="btn btn-info" style="color: #fff" href="<?php echo get_the_permalink($post_id);?>" target="_blank">Download Invoice</a>
 
 		</div>
 		<?php endif ?>
@@ -221,7 +258,16 @@ function invoice_meta_save_post(){
  	update_post_meta($post->ID, "quantity", $_POST["quantity"]);
  	update_post_meta($post->ID, "price", $_POST["price"]);
  	update_post_meta($post->ID, "total_price", $_POST["total_price"]);
- 	update_post_meta($post->ID, "paid_amount", $_POST["paid_amount"]); 
+ 	
+
+ 	update_post_meta($post->ID, "tax", $_POST["tax"]);
+ 	update_post_meta($post->ID, "tax_amount", $_POST["tax_amount"]); 
+ 	update_post_meta($post->ID, "pre_due", $_POST["pre_due"]); 
+ 	update_post_meta($post->ID, "deposite", $_POST["deposite"]); 
+ 	update_post_meta($post->ID, "grand_total", $_POST["grand_total"]); 
+ 	update_post_meta($post->ID, "paid_amount", $_POST["paid_amount"]);
+ 	update_post_meta($post->ID, "less_amount", $_POST["less_amount"]);
+ 	update_post_meta($post->ID, "total_due", $_POST["total_due"]); 
 
 	update_post_meta($post->ID, "type_nb", $_POST["type_nb"]);
 

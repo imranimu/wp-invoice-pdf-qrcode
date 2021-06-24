@@ -30,7 +30,7 @@ get_header();
                 <p class="open-sans-font">( আমদানীকারক / Order Suppliers )</p>
                 <p>M/S SALIM BROTHERS, one of the most prominent suppliers of the natural stone industry, now processes marble blocks and offers high value-added products in a 6.000 sq. m modern plant running as of the beginning of 2017 in Bucak Organized Industrial Zone as a second major step after its well-established sales area of 12.500 square meters in Bangladesh.</p>
                 <a class="button" href="<?php echo home_url();?>/about">
-                    <span class="button-text">more about me</span>
+                    <span class="button-text">more about us</span>
                     <span class="button-icon fa fa-arrow-right"></span>
                 </a>
             </div>

@@ -125,7 +125,7 @@ jQuery(document).ready(function(jQuery) {
         return false; 
     });
 
-    jQuery('.invoiceTable tbody').on('keyup change',function(){
+    jQuery('.invoiceTable').on('keyup change',function(){
         calc();
     });
 
@@ -157,26 +157,51 @@ function calc_total(){
 
     total = 0;
 
+    quantity = 0;
+
     jQuery('.unit_total').each(function() {
         total += parseInt(jQuery(this).val());        
     });
 
+    jQuery('.qty_cft').each(function() {
+        quantity += parseInt(jQuery(this).val());        
+    });
+
     jQuery('#sub_total').html('Tk. '+ total.toFixed(0));
+
+    jQuery('#total_qnt').html(quantity);
 
     var paid_amount = jQuery("#paid_amount").val();
 
-    total_sum= total - jQuery("#depositeAmount").val();           
+    total_sum= total - jQuery("#depositeAmount").val();  
     
-    var preDue = parseInt(jQuery("#oldDue").val());    
+    var preDue = parseInt(jQuery("#oldDue").val());
 
-    totaldue = Number( total_sum ) +  Number( preDue );   
+    tax_sum = total/100*jQuery('#tax').val();
 
-    var grandTotal = (totaldue - paid_amount ).toFixed(0);  
+    if (preDue) {
+        totaldue = Number( total_sum ) + preDue + tax_sum;        
+    }else{
+        totaldue = Number( total_sum ) + tax_sum;     
+    }
 
-    // tax_sum=total/100*jQuery('#tax').val();
-    // jQuery('#tax_amount').val(tax_sum.toFixed(2));
+    jQuery('#grand_total').html('Tk. '+ totaldue);
+    jQuery('#grand_amount').val(totaldue.toFixed(0));
 
-    jQuery('#total_amount').html( 'Tk. '+ grandTotal);
+    var less_amount = parseInt(jQuery('#less_amount').val());
+
+    if (less_amount) {
+        var grandTotal = (totaldue - paid_amount - less_amount).toFixed(0);
+    }else{
+        var grandTotal = (totaldue - paid_amount ).toFixed(0);
+    }          
+
+    jQuery('#tax_amount').val(tax_sum.toFixed(0));
+
+    
+
+
+    jQuery('#total_amount').val(grandTotal);
 }
 
 

@@ -34,7 +34,9 @@
         $page = 'portfolio';
     }elseif(is_404()){
 		$page = 'home';
-	}    
+	}else{
+        $page = '';
+    }    
 ?>
 <body class="<?php echo $page;?> light" <?php body_class(); ?>>
 <?php wp_body_open(); ?>
@@ -42,9 +44,15 @@
 <header class="header" id="navbar-collapse-toggle">
     <!-- Fixed Navigation Starts -->
     <ul class="icon-menu d-none d-lg-block revealator-slideup revealator-once revealator-delay1">
-        <li class="menu_logo">
+        <!-- <li class="menu_logo">
             <a href="<?php echo home_url();?>/login">
-                <img src="<?php echo get_template_directory_uri();?>/img/f-logo.png" alt="">
+                Login to Admin <img src="<?php echo get_template_directory_uri();?>/img/f-logo.png" alt="">
+            </a>
+        </li> -->
+        <li class="icon-box">
+            <i class="fa fa-user-o"></i>
+            <a href="<?php echo home_url();?>/login">
+                <h2>Login to Admin</h2>
             </a>
         </li>
         <li class="icon-box <?php if($page == 'home'){echo 'active';}?>">

@@ -10,7 +10,7 @@
 get_header(); 
 
  	?>
- 	<div class="InvoiceWrap">
+ 	<div class="InvoiceWrap mb-5">
  		<div class="container">
 
 		 <?php
@@ -18,8 +18,19 @@ get_header();
 
 				the_post();
 				
-				$post_id = get_the_ID();				
+				$post_id = get_the_ID();		
 
+				$metaData = get_post_meta($post_id);
+
+				/*echo "<pre>";
+				print_r($metaData);
+				echo "</pre>";*/
+
+				$client_id 		= get_post_meta($post_id, '_cmb_client_name', true );
+				$address		= get_post_meta($post_id, 'company_address', true );
+				$email			= get_post_meta($post_id, 'company_email', true );
+				$phone			= get_post_meta($post_id, 'company_phone', true );
+				
 				$order_date 	= get_post_meta($post_id, 'order_date', true );
 				$product_size 	= get_post_meta($post_id, 'product_size', true );
 				$truck_number 	= get_post_meta($post_id, 'truck_number', true );
@@ -27,18 +38,27 @@ get_header();
 				$get_price		= get_post_meta($post_id, 'price', true );
 				$get_total	 	= get_post_meta($post_id, 'total_price', true );
 
+				$tax	 		= get_post_meta($post_id, 'tax', true );
+				$tax_amount	 	= get_post_meta($post_id, 'tax_amount', true );
+				$pre_due	 	= get_post_meta($post_id, 'pre_due', true );
+				$deposite	 	= get_post_meta($post_id, 'deposite', true );
+
+				$grand_total	= get_post_meta($post_id, 'grand_total', true );
+				$less_amount	= get_post_meta($post_id, 'less_amount', true );
+
 				$paid_amount	= get_post_meta($post_id, 'paid_amount', true );	
+				$total_due		= get_post_meta($post_id, 'total_due', true );	
 
 				$quantity 		= ($get_qty) ? $get_qty : 0;	
 				$price 			= ($get_price) ? $get_price : 0;	
 				$unit_total 	= ($get_total) ? $get_total : 0;
+				$total_due		= ($total_due) ? $total_due : 0;				 
 
 				$type_nb 		= get_post_meta($post_id, 'type_nb', true );
 
 				$headerImage 	= get_template_directory_uri().'/inc/invoice/tutorial/header.png';
-
-				$padImage = get_template_directory_uri().'/inc/invoice/tutorial/pad_03.jpg';
-    			$footerImage = get_template_directory_uri().'/inc/invoice/tutorial/footer.png';
+				$padImage 		= get_template_directory_uri().'/inc/invoice/tutorial/pad_03.jpg';
+    			$footerImage 	= get_template_directory_uri().'/inc/invoice/tutorial/footer.png';
 				?>
 
 				<div class="pdf_header" style="width: 110%; margin-left: -5%;">
@@ -48,8 +68,10 @@ get_header();
 				<div class="row mb-4" style="margin-top: -50px;">
 					<div class="col-md-6">
 						<p style="font-size: 17px;">INVOICE TO: <br>
-						Greenovation Eng. & Con. LTD<br>
-						Nirala, Khulna,Bangladesh</p>
+						<strong><?php echo get_the_title($client_id);?></strong><br>
+						<?php echo $email; ?><br>
+						<?php echo $phone; ?><br>
+						<?php echo $address;?></p>
 					</div>
 
 					<div class="col-md-6 text-right">
@@ -73,9 +95,7 @@ get_header();
 					</thead>
 					<tbody>
 					   <tr>
-					   	<?php 				   	
-					   		$pre_due = 150000;
-					   		$deposite = 100000;
+					   	<?php 	
 							$subtotal += $unit_total;
 							$total_qty += $quantity;						
 							?>					    	 
@@ -153,16 +173,33 @@ get_header();
 				  			<td class="text-right">Subtotal :</td>
 				  			<td class="text-right subtotal_price" id="sub_total"><?php echo currency_price($subtotal, 0); ?></td>
 				  		</tr>
+				  		<tr class="tax_amount">
+				  			<td colspan="4"></td>
+				  			<td class="text-right" colspan="2">Tax (<?php echo $tax;?>%) :</td>
+				  			<td class="text-right">
+				  				<?php echo currency_price($tax_amount, 0);?>
+				  			</td>
+				  		</tr>
 				  		<tr class="due_amount">
 				  			<td colspan="4"><input type="hidden" id="oldDue" value="<?php echo $pre_due; ?>"></td>
 				  			<td class="text-right" colspan="2">Prev. Due :</td>
 				  			<td class="text-right"><?php echo currency_price($pre_due, 0); ?></td>
 				  		</tr>
-				  		<tr>
-				  			<td colspan="4"><input type="hidden" id="oldDue" value="<?php echo $pre_due; ?>"></td>
-				  			<td class="text-right" colspan="2">Total :</td>
-				  			<td class="text-right"><?php echo currency_price($pre_due + $subtotal , 0); ?></td>
+				  		<tr class="deposite_amount">
+				  			<td colspan="4"><input type="hidden" id="depositeAmount" value="<?php echo $deposite;?>"></td>
+				  			<td class="text-right" colspan="2">Deposite :</td>
+				  			<td class="text-right"><?php echo currency_price($deposite, 0); ?></td>
 				  		</tr>
+				  		<tr>
+				  			<td colspan="4"></td>
+				  			<td class="text-right" colspan="2">Grand Total :</td>		  			 
+				  			<td class="text-right" id="grand_total">
+				  				<?php 
+				  					echo currency_price($grand_total, 0); 
+				  				?>				  				
+				  			</td>
+				  		</tr> 
+
 				  		<tr class="deposite_amount">
 				  			<td colspan="4"></td>
 				  			<td class="text-right" colspan="2">Paid Amount :</td>
@@ -170,23 +207,26 @@ get_header();
 				  				<?php echo currency_price($paid_amount, 0); ?>
 				  			</td>
 				  		</tr>
-				  		<tr class="deposite_amount">
-				  			<td colspan="4"><input type="hidden" id="depositeAmount" value="<?php echo $deposite;?>"></td>
-				  			<td class="text-right" colspan="2">Deposite (20 Jan 2021) :</td>
-				  			<td class="text-right"><?php echo currency_price($deposite, 0); ?></td>
+
+				  		<tr>
+				  			<td colspan="4"></td>
+				  			<td class="text-right" colspan="2">Less :</td>
+				  			<td class="text-right">
+				  				<?php echo currency_price($less_amount, 0); ?>
+				  			</td>
 				  		</tr>
+				  		 
 				  		<tr class="due_amount">
 				  			<td colspan="4"></td>
 				  			<td class="text-right" colspan="2">Total Due :</td>
-				  			<?php 
-				  				$total_due = ($subtotal + $pre_due) - $deposite - $paid_amount;
-				  			?>
+				  			 
 				  			<td class="text-right" id="total_amount"><?php echo currency_price($total_due, 0); ?></td>
 				  		</tr>
+				  		 
 				  	</tfoot>
 				</table>
 
-				<form method="post">
+				<form method="post" class="pt-4">
 
 					<input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
 			        

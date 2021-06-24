@@ -78,7 +78,12 @@ function output_pdf($post_id) {
 
     /*
     ## Invoice Dynamic Data
-    ****************************/     
+    ****************************/    
+    $client_id      = get_post_meta($post_id, '_cmb_client_name', true );
+    $address        = get_post_meta($post_id, 'company_address', true );
+    $email          = get_post_meta($post_id, 'company_email', true );
+    $phone          = get_post_meta($post_id, 'company_phone', true );
+
     $order_date     = get_post_meta($post_id, 'order_date', true );
     $product_size   = get_post_meta($post_id, 'product_size', true );
     $truck_number   = get_post_meta($post_id, 'truck_number', true );
@@ -86,16 +91,25 @@ function output_pdf($post_id) {
     $get_price      = get_post_meta($post_id, 'price', true );
     $get_total      = get_post_meta($post_id, 'total_price', true );
 
+    $tax            = get_post_meta($post_id, 'tax', true );
+    $tax_amount     = get_post_meta($post_id, 'tax_amount', true );
+    $pre_due        = get_post_meta($post_id, 'pre_due', true );
+    $deposite       = get_post_meta($post_id, 'deposite', true );
+
+    $grand_total    = get_post_meta($post_id, 'grand_total', true );
+    $less_amount    = get_post_meta($post_id, 'less_amount', true );
+
     $paid_amount    = get_post_meta($post_id, 'paid_amount', true );    
+    $total_due      = get_post_meta($post_id, 'total_due', true );    
 
     $quantity       = ($get_qty) ? $get_qty : 0;    
     $price          = ($get_price) ? $get_price : 0;    
     $unit_total     = ($get_total) ? $get_total : 0;
+    $total_due      = ($total_due) ? $total_due : 0;
 
     $subtotal       += $unit_total;
     $total_qty      += $quantity;
-    $pre_due        = 150000;
-    $deposite       = 100000;
+    
 
     $type_nb        = get_post_meta($post_id, 'type_nb', true );    
 
@@ -119,8 +133,10 @@ function output_pdf($post_id) {
     $pdf->Image( $footerImage,0,250,110);    
 
     $pdf->Cell(0,6,'INVOICE TO:',0,1);
-    $pdf->Cell(0,6,'Greenovation Eng. & Con. LTD',0,1);
-    $pdf->Cell(0,6,'Nirala, Khulna,Bangladesh',0,1);
+    $pdf->Cell(0,6, get_the_title($client_id),0,1);
+    $pdf->Cell(0,6, $phone,0,1);
+    $pdf->Cell(0,6, $email,0,1);
+    $pdf->Cell(0,6, $address,0,1);
 
     // Set font
     $pdf->SetFont('Arial','B',18);
@@ -202,24 +218,29 @@ function output_pdf($post_id) {
     $pdf->Cell(30 ,6,'Tk. '.number_format($subtotal, 0),1,1,'R');
 
     $pdf->Cell(128 ,6,'',0,0);
+    $pdf->Cell(30 ,6,'Tax ('.$tax.'%)',0,0,'R');
+    $pdf->Cell(30 ,6,'Tk. '.number_format($tax_amount, 0),1,1,'R');
+
+    $pdf->Cell(128 ,6,'',0,0);
     $pdf->Cell(30 ,6,'Prev. Due:',0,0,'R');
     $pdf->Cell(30 ,6,'Tk. '.number_format($pre_due, 0),1,1,'R');
-
-    $grandTotal = $subtotal + $pre_due; 
+    
+    $pdf->Cell(118 ,6,'',0,0);
+    $pdf->Cell(40 ,6,'Deposite :',0,0,'R');
+    $pdf->Cell(30 ,6,'Tk. '.number_format($deposite, 0),1,1,'R');
 
     $pdf->Cell(128 ,6,'',0,0);
     $pdf->Cell(30 ,6,'Total:',0,0,'R');
-    $pdf->Cell(30 ,6,'Tk. '.number_format($grandTotal, 0),1,1,'R');
-
-    $pdf->Cell(118 ,6,'',0,0);
-    $pdf->Cell(40 ,6,'Deposite (20 Jan 2021) :',0,0,'R');
-    $pdf->Cell(30 ,6,'Tk. '.number_format($deposite, 0),1,1,'R');
+    $pdf->Cell(30 ,6,'Tk. '.number_format($grand_total, 0),1,1,'R');
+    
 
     $pdf->Cell(118 ,6,'',0,0);
     $pdf->Cell(40 ,6,'Paid Amount :',0,0,'R');
     $pdf->Cell(30 ,6,'Tk. '.number_format($paid_amount, 0),1,1,'R');
 
-    $total_due = ($subtotal + $pre_due) - $deposite - $paid_amount;
+    $pdf->Cell(118 ,6,'',0,0);
+    $pdf->Cell(40 ,6,'Less :',0,0,'R');
+    $pdf->Cell(30 ,6,'Tk. '.number_format($less_amount, 0),1,1,'R');    
 
     $pdf->Cell(128 ,6,'',0,0);
     $pdf->Cell(30 ,6,'Total Due :',0,0,'R');
